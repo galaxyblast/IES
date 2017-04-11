@@ -18,12 +18,21 @@ public class Population
 		
 		return tile; 
 	}
+	
 	public Tile AddTile(){
 		return null; 
 	}
+	
 	public void RemoveTile(Tile tile){
 		
-	 
+	}
+	
+	public void AddMemList(Member member){
+		
+	}
+	
+	public void DelMemList(Member member){
+		
 	}
 
 	
