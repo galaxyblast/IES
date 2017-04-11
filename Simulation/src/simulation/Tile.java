@@ -14,7 +14,7 @@ public class Tile{
 	private Population Owner;
 	private Random rand;
 	
-	public Tile(int x, int y, int RenewableResources, int NonRenewableResources, int RegenRate, int TerrainModifier, Member Inhabitants[], Population Owner, Random rander, Random rand)
+	public Tile(int x, int y, int RenewableResources, int NonRenewableResources, int RegenRate, int TerrainModifier, Member Inhabitants[], Population Owner, Random rand)
 	{
 		this.x = x;
 		this.y = y;
