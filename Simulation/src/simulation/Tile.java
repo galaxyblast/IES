@@ -26,25 +26,6 @@ public class Tile{
 		this.Owner = Owner;
 	}
 	
-	public int generateMaxInhabitants(int tm)
-	{
-		int maxInhabReturn;
-		Random rng = new Random();
-		
-		if(tm == 0) //if the terrain is flat land, 
-			maxInhabReturn = rng.nextInt(11) + 20;
-		else if(tm == 1)
-			maxInhabReturn = rng.nextInt(6);
-		else if(tm == 2)
-			maxInhabReturn = rng.nextInt(11) + 10;
-		else
-		{
-			System.out.println("Invalid tile type");
-			maxInhabReturn = 0;
-		}
-			
-		return maxInhabReturn;
-	}
 	
 	public int getX() {
 		return x;
