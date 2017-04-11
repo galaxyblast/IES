@@ -46,5 +46,77 @@ public class Tile{
 		return maxInhabReturn;
 	}
 	
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getRenewableResources() {
+		return RenewableResources;
+	}
+
+	public void setRenewableResources(int renewableResources) {
+		RenewableResources = renewableResources;
+	}
+
+	public int getNonRenewableResources() {
+		return NonRenewableResources;
+	}
+
+	public void setNonRenewableResources(int nonRenewableResources) {
+		NonRenewableResources = nonRenewableResources;
+	}
+
+	public int getRegenRate() {
+		return RegenRate;
+	}
+
+	public void setRegenRate(int regenRate) {
+		RegenRate = regenRate;
+	}
+
+	public int getTerrainModifier() {
+		return TerrainModifier;
+	}
+
+	public void setTerrainModifier(int terrainModifier) {
+		TerrainModifier = terrainModifier;
+	}
+
+	public int getMaxInhabitants() {
+		return MaxInhabitants;
+	}
+
+	public void setMaxInhabitants(int maxInhabitants) {
+		MaxInhabitants = maxInhabitants;
+	}
+
+	public Member[] getInhabitants() {
+		return Inhabitants;
+	}
+
+	public void setInhabitants(Member[] inhabitants) {
+		Inhabitants = inhabitants;
+	}
+
+	public Population getOwner() {
+		return Owner;
+	}
+
+	public void setOwner(Population owner) {
+		Owner = owner;
+	}
+
 	
 }
