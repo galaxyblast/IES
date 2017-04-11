@@ -1,7 +1,5 @@
 package simulation;
 
-import java.util.Random;
-
 public class Tile{
 	private int x;
 	private int y;
@@ -9,7 +7,6 @@ public class Tile{
 	private int NonRenewableResources;
 	private int RegenRate;
 	private int TerrainModifier; //0 is flat land, 1 has water, 2 hills/mountains
-	private int MaxInhabitants; //based on terrainmod
 	private Member Inhabitants[];
 	private Population Owner;
 	
@@ -21,7 +18,6 @@ public class Tile{
 		this.NonRenewableResources = NonRenewableResources;
 		this.RegenRate = RegenRate;
 		this.TerrainModifier = TerrainModifier;
-		this.MaxInhabitants = generateMaxInhabitants(TerrainModifier);
 		this.Inhabitants = Inhabitants;
 		this.Owner = Owner;
 	}
@@ -73,14 +69,6 @@ public class Tile{
 
 	public void setTerrainModifier(int terrainModifier) {
 		TerrainModifier = terrainModifier;
-	}
-
-	public int getMaxInhabitants() {
-		return MaxInhabitants;
-	}
-
-	public void setMaxInhabitants(int maxInhabitants) {
-		MaxInhabitants = maxInhabitants;
 	}
 
 	public Member[] getInhabitants() {
