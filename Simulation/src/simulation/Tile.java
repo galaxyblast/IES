@@ -1,5 +1,7 @@
 package simulation;
 
+import java.util.Random;
+
 public class Tile{
 	private int x;
 	private int y;
@@ -7,10 +9,12 @@ public class Tile{
 	private int NonRenewableResources;
 	private int RegenRate;
 	private int TerrainModifier; //0 is flat land, 1 has water, 2 hills/mountains
+	private int MaxInhabitants;
 	private Member Inhabitants[];
 	private Population Owner;
+	private Random rand;
 	
-	public Tile(int x, int y, int RenewableResources, int NonRenewableResources, int RegenRate, int TerrainModifier, Member Inhabitants[], Population Owner)
+	public Tile(int x, int y, int RenewableResources, int NonRenewableResources, int RegenRate, int TerrainModifier, Member Inhabitants[], Population Owner, Random rander, Random rand)
 	{
 		this.x = x;
 		this.y = y;
@@ -20,6 +24,28 @@ public class Tile{
 		this.TerrainModifier = TerrainModifier;
 		this.Inhabitants = Inhabitants;
 		this.Owner = Owner;
+		this.rand = rand;
+		this.MaxInhabitants = generateMaxInhabitants(TerrainModifier);
+	}
+	
+	public int generateMaxInhabitants(int tm)
+	{
+		int maxInhabReturn;
+		Random rng = this.rand;
+		
+		if(tm == 0) //if the terrain is flat land, 
+			maxInhabReturn = rng.nextInt(11) + 20;
+		else if(tm == 1)
+			maxInhabReturn = rng.nextInt(6);
+		else if(tm == 2)
+			maxInhabReturn = rng.nextInt(11) + 10;
+		else
+		{
+			System.out.println("Invalid tile type");
+			maxInhabReturn = 0;
+		}
+			
+		return maxInhabReturn;
 	}
 	
 	
@@ -85,6 +111,14 @@ public class Tile{
 
 	public void setOwner(Population owner) {
 		Owner = owner;
+	}
+
+	public int getMaxInhabitants() {
+		return MaxInhabitants;
+	}
+
+	public void setMaxInhabitants(int maxInhabitants) {
+		MaxInhabitants = maxInhabitants;
 	}
 
 	
