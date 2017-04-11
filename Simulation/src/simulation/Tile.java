@@ -1,5 +1,6 @@
 package simulation;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Tile{
@@ -10,11 +11,11 @@ public class Tile{
 	private int RegenRate;
 	private int TerrainModifier; //0 is flat land, 1 has water, 2 hills/mountains
 	private int MaxInhabitants;
-	private Member Inhabitants[];
+	private ArrayList<Member> Inhabitants;
 	private Population Owner;
 	private Random rand;
 	
-	public Tile(int x, int y, int RenewableResources, int NonRenewableResources, int RegenRate, int TerrainModifier, Member Inhabitants[], Population Owner, Random rand)
+	public Tile(int x, int y, int RenewableResources, int NonRenewableResources, int RegenRate, int TerrainModifier, Random rand)
 	{
 		this.x = x;
 		this.y = y;
@@ -22,8 +23,6 @@ public class Tile{
 		this.NonRenewableResources = NonRenewableResources;
 		this.RegenRate = RegenRate;
 		this.TerrainModifier = TerrainModifier;
-		this.Inhabitants = Inhabitants;
-		this.Owner = Owner;
 		this.rand = rand;
 		this.MaxInhabitants = generateMaxInhabitants(TerrainModifier);
 	}
@@ -97,13 +96,6 @@ public class Tile{
 		TerrainModifier = terrainModifier;
 	}
 
-	public Member[] getInhabitants() {
-		return Inhabitants;
-	}
-
-	public void setInhabitants(Member[] inhabitants) {
-		Inhabitants = inhabitants;
-	}
 
 	public Population getOwner() {
 		return Owner;
@@ -119,6 +111,14 @@ public class Tile{
 
 	public void setMaxInhabitants(int maxInhabitants) {
 		MaxInhabitants = maxInhabitants;
+	}
+
+	public ArrayList<Member> getInhabitants() {
+		return Inhabitants;
+	}
+
+	public void setInhabitants(ArrayList<Member> inhabitants) {
+		Inhabitants = inhabitants;
 	}
 
 	
