@@ -1,6 +1,73 @@
 package simulation.gui;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import simulation.Tile;
+
 public class GuiTile
 {
-
+	private Tile tile;
+	private Polygon hex;
+	private static final double MAPOFFX = 24.0D;
+	private static final double MAPOFFY = 32.0D;
+	
+	public GuiTile(Tile t)
+	{
+		this.tile = t;
+		this.hex = new Polygon();
+		
+		hex.getPoints().addAll(new Double[]{
+				4.0D, 0.0D,
+				12.0D, 0.0D,
+				16.0D, -8.0D,
+				12.0D, -16.0D,
+				4.0D, -16.0D,
+				0.0D, -8.0D
+		});
+		hex.setStroke(Color.BLACK);
+		Color c;
+		
+		switch(this.tile.getTerrainModifier())
+		{
+		case 0:
+			c = Color.GREEN;
+			break;
+		case 1:
+			c = Color.BLUE;
+			break;
+		case 2:
+		default:
+			c = Color.ROSYBROWN;
+			break;
+		}
+		
+		hex.setFill(c);
+		
+		double offX = 0.0D, offY = 0.0D;
+		if(this.tile.getY() % 2 == 1) //only offset every other row
+		{
+			offX = 12.0D;	//offset by 4/3 the x size
+			offY = 16.0D;	//offset by twice the y size
+		}
+		
+		if(this.tile.getY() == 49)  //for whatever reason the last row isn't offset right
+		{
+			offX = 0.0D;	//offset by 4/3 the x size
+			offY = 8.0D;	//offset by twice the y size
+		}
+		
+		if(this.tile.getY() == 0)  //neither is the first row...
+		{
+			offX = 12.0D;	//offset by 4/3 the x size
+			offY = 8.0D;	//offset by twice the y size
+		}
+		
+		hex.setLayoutX(((double)this.tile.getX() * 24.0D) + offX + MAPOFFX); //offset each grid point by 8/3 the x size
+		hex.setLayoutY(((double)this.tile.getY() * 8.0D) + offY + MAPOFFY); //offset each grid point by the y size
+	}
+	
+	public Polygon getPoly()
+	{
+		return this.hex;
+	}
 }
