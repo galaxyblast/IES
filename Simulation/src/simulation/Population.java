@@ -21,16 +21,18 @@ public class Population
 	}
 	
 	public Tile UpdateTile(Tile tile){
-		
+		// TODO
 		return tile; 
 	}
 	
-	public Tile AddTile(){
-		return null; 
+	public void AddTile(Tile tile) {
+		tile.setOwner(this);
+		OwnedTiles.add(tile);
 	}
 	
 	public void RemoveTile(Tile tile){
-		
+		tile.setOwner(null);
+		OwnedTiles.remove(tile);
 	}
 	
 	public void AddMemList(Member member){
@@ -39,7 +41,7 @@ public class Population
 	}
 	
 	public void DelMemList(Member member){
-		
+		MemList.remove(member);
 	}
 
 	
