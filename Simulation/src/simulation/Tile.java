@@ -49,7 +49,7 @@ public class Tile{
 	}
 	
 	public boolean isFull(){
-		if(this.Inhabitants.size() == this.MaxInhabitants)
+		if(this.Inhabitants.size() >= this.MaxInhabitants)
 			return true;
 		else
 			return false;
