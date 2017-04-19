@@ -81,7 +81,8 @@ public class Tile{
 	}
 	
 	public void cycle(){
-		this.RenewableResources += this.RegenRate;
+		if(this.RenewableResources + this.RegenRate <= 1000)
+			this.RenewableResources += this.RegenRate;
 	}
 	
 	public int getX() {
