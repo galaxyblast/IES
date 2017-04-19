@@ -26,7 +26,7 @@ public class Member
 		if (random.nextInt() % 100 >= population.getPopRate()) {
 			// TODO: decide new home
 			Tile home;
-			if (this.homeTile.getMaxInhabitants() >= this.homeTile.getInhabitants().length) {
+			if (this.homeTile.getMaxInhabitants() >= this.homeTile.getInhabitants().size()) {
 				home = this.homeTile;	// TODO: Move Function
 				return;
 			} else {

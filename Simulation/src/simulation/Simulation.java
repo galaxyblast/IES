@@ -6,12 +6,15 @@ import java.util.Random;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 import simulation.gui.Action;
 import simulation.gui.GuiButton;
 import simulation.gui.GuiTile;
@@ -30,14 +33,17 @@ public class Simulation extends Application
 	private ArrayList<Tile> landTiles = new ArrayList<Tile>();
 
 	//Use this to call any needed function from here
-	public static final Simulation instance = new Simulation();
+	public static Simulation instance;
 
 	private Random rng = new Random();
+	
+	private TextField numCycle = new TextField();
 
 	//Main function
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
+		instance = this;
 		this.canvas.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.0D), new Insets(0.0D))));
 
 		primaryStage.setTitle("Population Simulation");
@@ -53,9 +59,13 @@ public class Simulation extends Application
 				Simulation.instance.cycle(1);
 			}
 		});
+		this.numCycle.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+		this.numCycle.setLayoutX(this.canvas.getWidth() / 2.0D + 64.0D);
+		this.numCycle.setLayoutY(this.canvas.getHeight() - 30.0D);
 
 		//Add screen elements
 		this.addButton(this.runCycleButton);
+		this.canvas.getChildren().add(this.numCycle);
 
 		//setup world
 		this.setupWorld();
@@ -96,12 +106,15 @@ public class Simulation extends Application
 
 		//update map
 		this.updateWorld();
+		
+		this.world = new World(this.rng);
 	}
 
 	//The main function for simulation
 	public void cycle(int loops)
 	{
-
+		for(int i = 0; i < loops; i++)
+			this.world.cycle();
 	}
 
 	private void updateWorld()
@@ -110,6 +123,7 @@ public class Simulation extends Application
 
 		this.canvas.getChildren().clear();
 		this.addButton(this.runCycleButton);
+		this.canvas.getChildren().add(this.numCycle);
 		for(int x = 0; x < MAPSIZEX; x++)
 		{
 			for(int y = 0; y < MAPSIZEY; y++)
@@ -252,6 +266,94 @@ public class Simulation extends Application
 
 	public ArrayList<Tile> getSurroundingTiles(int x, int y)
 	{
+		Tile t = this.getTile(x, y);
+		ArrayList<Tile> out = new ArrayList<Tile>();
+
+		if(y % 2 == 0)
+		{
+			t = this.getTile(x - 1, y - 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y + 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x - 1, y - 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+		}
+		else
+		{
+			t = this.getTile(x, y + 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x + 1, y + 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x + 1, y + 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y + 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y + 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+		}
+
+		return out;
+	}
+	
+	public ArrayList<Tile> getSurroundingTiles(Tile tile)
+	{
+		int x = tile.getX();
+		int y = tile.getY();
+		
 		Tile t = this.getTile(x, y);
 		ArrayList<Tile> out = new ArrayList<Tile>();
 
