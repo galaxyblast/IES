@@ -25,6 +25,7 @@ public class Tile{
 		this.TerrainModifier = TerrainModifier;
 		this.rand = rand;
 		this.MaxInhabitants = generateMaxInhabitants(TerrainModifier);
+		this.Inhabitants = new ArrayList<Member>() ;
 	}
 	
 	public int generateMaxInhabitants(int tm)
@@ -47,6 +48,12 @@ public class Tile{
 		return maxInhabReturn;
 	}
 	
+	public boolean isFull(){
+		if(this.Inhabitants.size() == this.MaxInhabitants)
+			return true;
+		else
+			return false;
+	}
 	
 	public int getX() {
 		return x;
