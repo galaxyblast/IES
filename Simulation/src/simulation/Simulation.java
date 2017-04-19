@@ -18,6 +18,7 @@ import javafx.util.converter.NumberStringConverter;
 import simulation.gui.Action;
 import simulation.gui.GuiButton;
 import simulation.gui.GuiTile;
+import simulation.gui.GuiTileOwned;
 
 public class Simulation extends Application
 {
@@ -31,6 +32,7 @@ public class Simulation extends Application
 	private Tile[][] map = new Tile[MAPSIZEX][MAPSIZEY];
 	private Population[] popList = new Population[5];
 	private ArrayList<Tile> landTiles = new ArrayList<Tile>();
+	private ArrayList<GuiTileOwned> ownedTiles = new ArrayList<GuiTileOwned>();
 
 	//Use this to call any needed function from here
 	public static Simulation instance;
@@ -56,7 +58,9 @@ public class Simulation extends Application
 			@Override
 			public void start()
 			{
-				Simulation.instance.cycle(1);
+				int c = Simulation.instance.getNumCycles();
+				System.out.println("Running " + c + " cycles.");
+				Simulation.instance.cycle(c);
 			}
 		});
 		this.numCycle.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
@@ -104,10 +108,17 @@ public class Simulation extends Application
 			this.genMountain(this.rng.nextInt(MAPSIZEX - 4) + 2, this.rng.nextInt(MAPSIZEY - 6) + 3, 0);
 		}
 
+		this.world = new World(this.rng);
+		for(int i = 0; i < 4; i++)
+		{
+			for(Tile t : this.world.getPopList()[i].getOwnedTiles())
+			{
+				this.ownedTiles.add(new GuiTileOwned(t));
+			}
+		}
+		
 		//update map
 		this.updateWorld();
-
-		this.world = new World(this.rng);
 	}
 
 	//The main function for simulation
@@ -115,6 +126,8 @@ public class Simulation extends Application
 	{
 		for(int i = 0; i < loops; i++)
 			this.world.cycle();
+		
+		this.updateWorld();
 	}
 
 	private void updateWorld()
@@ -131,6 +144,20 @@ public class Simulation extends Application
 				tmp = new GuiTile(this.map[x][y]);
 				this.addGuiTile(tmp);
 			}
+		}
+		
+		this.ownedTiles.clear();
+		for(int i = 0; i < 4; i++)
+		{
+			for(Tile t : this.world.getPopList()[i].getOwnedTiles())
+			{
+				this.ownedTiles.add(new GuiTileOwned(t));
+			}
+		}
+		
+		for(GuiTileOwned t : this.ownedTiles)
+		{
+			this.canvas.getChildren().add(t.getPoly());
 		}
 	}
 
@@ -443,5 +470,14 @@ public class Simulation extends Application
 	public ArrayList<Tile> getLandTiles()
 	{
 		return this.landTiles;
+	}
+	
+	public int getNumCycles()
+	{
+		if(!this.numCycle.getText().isEmpty())
+			return Integer.parseInt(this.numCycle.getText());
+		
+		else
+			return 1;
 	}
 }

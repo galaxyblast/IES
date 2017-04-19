@@ -96,12 +96,17 @@ public class Population
 			case 0:
 				return "Red";
 			case 1:
-				return "Green";
+				return "White";
 			case 2:
-				return "Blue";
+				return "Black";
 			case 3:
 			default:
 				return "Yellow";
 		}
+	}
+	
+	public CopyOnWriteArrayList<Tile> getOwnedTiles()
+	{
+		return this.OwnedTiles;
 	}
 }

@@ -29,6 +29,7 @@ public class World
 			{
 				popList[i].AddMemList(new Member(t, popList[i], r));
 			}
+			popList[i].setID(i);
 		}
 	}
 
@@ -48,5 +49,10 @@ public class World
 				map[x][y].cycle();
 			}
 		}
+	}
+	
+	public Population[] getPopList()
+	{
+		return this.popList;
 	}
 }

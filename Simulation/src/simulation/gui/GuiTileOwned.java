@@ -34,10 +34,10 @@ public class GuiTileOwned
 				c = Color.RED;
 				break;
 		case 1:
-			c = Color.GREEN;
+			c = Color.WHITE;
 			break;
 		case 2:
-			c = Color.BLUE;
+			c = Color.BLACK;
 			break;
 		case 3:
 		default:
@@ -46,6 +46,7 @@ public class GuiTileOwned
 		}
 
 		hex.setFill(c);
+		hex.setOpacity(0.6D);
 
 		double offX = 0.0D, offY = 0.0D;
 		if(this.tile.getY() % 2 == 1) //only offset every other row
@@ -68,6 +69,19 @@ public class GuiTileOwned
 
 		hex.setLayoutX(((double)this.tile.getX() * 24.0D) + offX + MAPOFFX); //offset each grid point by 8/3 the x size
 		hex.setLayoutY(((double)this.tile.getY() * 8.0D) + offY + MAPOFFY); //offset each grid point by the y size
+		
+		String own = "None";
+		if(this.tile.getOwner() != null)
+			own = this.tile.getOwner().getName();
+		
+		Tooltip tip = new Tooltip("X: " + this.tile.getX() +
+								"\nY: " + this.tile.getY() +
+								"\nOwner: " + own +
+								"\nCivilians: " + this.tile.getInhabitants().size() +
+								"\nRenewable Resources: " + this.tile.getRenewableResources() +
+								"\nNonrenewable Resources: " + this.tile.getNonRenewableResources() +
+								"Is Overpopulating: " + this.tile.isFull());
+		Tooltip.install(hex, tip);
 	}
 
 	public Polygon getPoly()

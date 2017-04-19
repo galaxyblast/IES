@@ -16,6 +16,8 @@ public class Member
 		this.random = rand;
 		this.population = pop;
 		this.needs = pop.getpopNeeds();
+		
+		home.getInhabitants().add(this);
 	}
 
 	public void cycle() {
@@ -32,7 +34,7 @@ public class Member
 			if (this.homeTile.isFull()) {
 				ArrayList<Tile> neighbors = Simulation.instance.getSurroundingTiles(this.homeTile);
 				for (int i = 0; i < neighbors.size(); i++) {
-					int rand = random.nextInt() % neighbors.size();
+					int rand = random.nextInt(neighbors.size());
 					Tile tile = neighbors.get(rand);
 					if (!(tile.isFull() || (tile.getOwner() != this.population))) {
 						home = tile;

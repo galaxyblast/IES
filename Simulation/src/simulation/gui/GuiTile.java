@@ -69,10 +69,17 @@ public class GuiTile
 		hex.setLayoutX(((double)this.tile.getX() * 24.0D) + offX + MAPOFFX); //offset each grid point by 8/3 the x size
 		hex.setLayoutY(((double)this.tile.getY() * 8.0D) + offY + MAPOFFY); //offset each grid point by the y size
 
+		String own = "None";
+		if(this.tile.getOwner() != null)
+			own = this.tile.getOwner().getName();
+		
 		Tooltip tip = new Tooltip("X: " + this.tile.getX() +
 								"\nY: " + this.tile.getY() +
-								"\nOwner: " +
-								"\nCivilians: "); //+ this.tile.getInhabitants().size());
+								"\nOwner: " + own +
+								"\nCivilians: " + this.tile.getInhabitants().size() +
+								"\nRenewable Resources: " + this.tile.getRenewableResources() +
+								"\nNonrenewable Resources: " + this.tile.getNonRenewableResources() +
+								"\nIs Overpopulating: " + this.tile.isFull());
 		Tooltip.install(hex, tip);
 	}
 
