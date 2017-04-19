@@ -15,18 +15,22 @@ public class World
 		Tile t;
 		int c;
 		ArrayList<Tile> l = Simulation.instance.getLandTiles();
+		System.out.println(l.size());
 		for(int i = 0; i < 4; i++)
 		{
 			popList[i] = new Population();
 			c = this.rng.nextInt(l.size());
 			t = l.get(c);
 			l.remove(c);
-			//add the starting tile
+			//popList[i].AddTile(t);
 		}
 	}
 
 	public void cycle()
 	{
-
+		for(int i = 0; i < 4; i++)
+		{
+			
+		}
 	}
 }
