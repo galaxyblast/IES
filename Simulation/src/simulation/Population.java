@@ -23,8 +23,14 @@ public class Population
 	}
 	
 	public void Cycle(){
-		Member.Cycle();
- 
+		for(Member i: MemList){
+			i.Cycle();
+		}
+		for(Tile i: OwnedTiles){
+			if(i.isEmpty())
+				RemoveTile(i);
+				
+		}
 	}
 	
 	public void AddTile(Tile tile) {
