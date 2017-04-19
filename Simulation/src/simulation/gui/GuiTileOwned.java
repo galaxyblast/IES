@@ -41,12 +41,12 @@ public class GuiTileOwned
 			break;
 		case 3:
 		default:
-			c = Color.YELLOW;
+			c = Color.PURPLE;
 			break;
 		}
 
 		hex.setFill(c);
-		hex.setOpacity(0.6D);
+		hex.setOpacity(0.2D);
 
 		double offX = 0.0D, offY = 0.0D;
 		if(this.tile.getY() % 2 == 1) //only offset every other row
@@ -80,7 +80,7 @@ public class GuiTileOwned
 								"\nCivilians: " + this.tile.getInhabitants().size() +
 								"\nRenewable Resources: " + this.tile.getRenewableResources() +
 								"\nNonrenewable Resources: " + this.tile.getNonRenewableResources() +
-								"Is Overpopulating: " + this.tile.isFull());
+								"\nMax Inhabitants: " + this.tile.getMaxInhabitants());
 		Tooltip.install(hex, tip);
 	}
 

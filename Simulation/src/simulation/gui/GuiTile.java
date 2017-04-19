@@ -79,7 +79,7 @@ public class GuiTile
 								"\nCivilians: " + this.tile.getInhabitants().size() +
 								"\nRenewable Resources: " + this.tile.getRenewableResources() +
 								"\nNonrenewable Resources: " + this.tile.getNonRenewableResources() +
-								"\nIs Overpopulating: " + this.tile.isFull());
+								"\nMax Inhabitants: " + this.tile.getMaxInhabitants());
 		Tooltip.install(hex, tip);
 	}
 

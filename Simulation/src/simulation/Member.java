@@ -36,7 +36,7 @@ public class Member
 				for (int i = 0; i < neighbors.size(); i++) {
 					int rand = random.nextInt(neighbors.size());
 					Tile tile = neighbors.get(rand);
-					if (!(tile.isFull() || (tile.getOwner() != this.population))) {
+					if (!(tile.isFull() || (tile.getOwner() != this.population && tile.getOwner() != null))) {
 						home = tile;
 						break;
 					}
@@ -48,6 +48,8 @@ public class Member
 			}
 
 			Member newMember = new Member(home, this.population, this.random);
+			if(home != this.homeTile)
+				this.population.AddTile(home);
 			this.population.AddMemList(newMember);
 			return;
 		}

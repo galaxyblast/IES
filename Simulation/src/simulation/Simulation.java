@@ -146,12 +146,16 @@ public class Simulation extends Application
 			}
 		}
 		
-		this.ownedTiles.clear();
+		this.ownedTiles = new ArrayList<GuiTileOwned>();
 		for(int i = 0; i < 4; i++)
 		{
-			for(Tile t : this.world.getPopList()[i].getOwnedTiles())
+			for(int x = 0; x < MAPSIZEX; x++)
 			{
-				this.ownedTiles.add(new GuiTileOwned(t));
+				for(int y = 0; y < MAPSIZEY; y++)
+				{
+					if(this.map[x][y].getOwner() != null)
+						this.ownedTiles.add(new GuiTileOwned(this.map[x][y]));
+				}
 			}
 		}
 		
@@ -200,6 +204,7 @@ public class Simulation extends Application
 		this.map[x][y].setRenewableResources(this.rng.nextInt(100));
 		this.map[x][y].setNonRenewableResources(this.rng.nextInt(100));
 		this.map[x][y].setRegenRate((int)Math.ceil((double)this.map[x][y].getRenewableResources() / 2.0D));
+		this.map[x][y].setMaxInhabitants(this.map[x][y].generateMaxInhabitants(0));
 		this.landTiles.add(this.map[x][y]);
 		if(this.rng.nextInt() % 32 != 0 && steps < 100)
 		{
@@ -237,7 +242,10 @@ public class Simulation extends Application
 	private void genMountain(int x, int y, int steps)
 	{
 		if(this.map[x][y].getTerrainModifier() == 0)
+		{
 			this.map[x][y].setTerrainModifier(2);
+			this.map[x][y].setMaxInhabitants(this.map[x][y].generateMaxInhabitants(2));
+		}
 		if(this.rng.nextInt() % 16 != 0 && steps < 24)
 		{
 			int xOff = this.rng.nextInt(3) - 1;

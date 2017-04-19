@@ -44,16 +44,22 @@ public class Population
 	public void AddTile(Tile tile) {
 		synchronized(OwnedTiles)
 		{
-			tile.setOwner(this);
-			OwnedTiles.add(tile);
+			if(!OwnedTiles.contains(tile))
+			{
+				tile.setOwner(this);
+				OwnedTiles.add(tile);
+			}
 		}
 	}
 
 	public void RemoveTile(Tile tile){
 		synchronized(OwnedTiles)
 		{
-			tile.setOwner(null);
-			OwnedTiles.remove(tile);
+			if(OwnedTiles.contains(tile))
+			{
+				tile.setOwner(null);
+				OwnedTiles.remove(tile);
+			}
 		}
 	}
 
@@ -101,7 +107,7 @@ public class Population
 				return "Black";
 			case 3:
 			default:
-				return "Yellow";
+				return "Purple";
 		}
 	}
 	
