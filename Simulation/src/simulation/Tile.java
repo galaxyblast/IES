@@ -55,6 +55,18 @@ public class Tile{
 			return false;
 	}
 	
+	public boolean isEmpty(){
+		if(this.Inhabitants.size() == 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public void removeMember(Member member){
+		if(this.Inhabitants.contains(member))
+			this.Inhabitants.remove(member);
+	}
+	
 	public int getX() {
 		return x;
 	}
