@@ -1,5 +1,6 @@
 package simulation;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.application.Application;
@@ -9,16 +10,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import simulation.gui.Action;
 import simulation.gui.GuiButton;
 import simulation.gui.GuiTile;
 
 public class Simulation extends Application
 {
-	private static final int MAPSIZEX = 25;
-	private static final int MAPSIZEY = 50;
+	public static final int MAPSIZEX = 25;
+	public static final int MAPSIZEY = 50;
 
 	public final AnchorPane canvas = new AnchorPane();
 	private Scene scene = new Scene(this.canvas, 640, 480);
@@ -26,10 +27,11 @@ public class Simulation extends Application
 	private World world;
 	private Tile[][] map = new Tile[MAPSIZEX][MAPSIZEY];
 	private Population[] popList = new Population[5];
+	private ArrayList<Tile> landTiles = new ArrayList<Tile>();
 
 	//Use this to call any needed function from here
 	public static final Simulation instance = new Simulation();
-	
+
 	private Random rng = new Random();
 
 	//Main function
@@ -44,10 +46,17 @@ public class Simulation extends Application
 		primaryStage.show();
 
 		//Initialize screen elements
+		this.runCycleButton.setAction(new Action(){
+			@Override
+			public void start()
+			{
+				Simulation.instance.cycle(1);
+			}
+		});
 
 		//Add screen elements
 		this.addButton(this.runCycleButton);
-		
+
 		//setup world
 		this.setupWorld();
 	}
@@ -55,16 +64,16 @@ public class Simulation extends Application
 	//Anything that needs to be instantiated with the world goes here
 	public void setupWorld()
 	{
-		//this.rng.setSeed(1L);
-		
+		//this.rng.setSeed(10L);
+
 		GuiTile tmp;
-		
+
 		//generate map
 		for(int x = 0; x < MAPSIZEX; x++)
 		{
 			for(int y = 0; y < MAPSIZEY; y++)
 			{
-				this.map[x][y] = new Tile(x, y, 0, 0, 0, 1, null, null);
+				this.map[x][y] = new Tile(x, y, 0, 0, 0, 1, this.rng);
 				tmp = new GuiTile(this.map[x][y]);
 				this.addGuiTile(tmp);
 			}
@@ -79,12 +88,12 @@ public class Simulation extends Application
 		}
 
 		this.smoothLand();
-		
+
 		for(int i = 0; i <= mountainPasses; i++)
 		{
 			this.genMountain(this.rng.nextInt(MAPSIZEX - 4) + 2, this.rng.nextInt(MAPSIZEY - 6) + 3, 0);
 		}
-		
+
 		//update map
 		this.updateWorld();
 	}
@@ -94,11 +103,11 @@ public class Simulation extends Application
 	{
 
 	}
-	
+
 	private void updateWorld()
 	{
 		GuiTile tmp;
-		
+
 		this.canvas.getChildren().clear();
 		this.addButton(this.runCycleButton);
 		for(int x = 0; x < MAPSIZEX; x++)
@@ -116,10 +125,10 @@ public class Simulation extends Application
 		return this.world;
 	}
 
-	public Tile getTile(int x, int z)
+	public Tile getTile(int x, int y)
 	{
-		if(x >= 0 && x < MAPSIZEX && z >= 0 && z < MAPSIZEY)
-			return this.map[x][z];
+		if(x >= 0 && x < MAPSIZEX && y >= 0 && y < MAPSIZEY)
+			return this.map[x][y];
 		else
 			return null;
 	}
@@ -138,20 +147,21 @@ public class Simulation extends Application
 	{
 		this.canvas.getChildren().add(btn.getButton());
 	}
-	
+
 	public void addGuiTile(GuiTile t)
 	{
 		this.canvas.getChildren().add(t.getPoly());
 	}
-	
+
 	private void genLand(int x, int y, int steps)
 	{
 		this.map[x][y].setTerrainModifier(0);
+		this.landTiles.add(this.map[x][y]);
 		if(this.rng.nextInt() % 32 != 0 && steps < 100)
 		{
 			int xOff = this.rng.nextInt(3) - 1;
 			int yOff = this.rng.nextInt(3) - 1;
-			
+
 			int i = 0;
 			boolean flag = false;
 			while(!flag && i < 7)
@@ -179,7 +189,7 @@ public class Simulation extends Application
 			}
 		}
 	}
-	
+
 	private void genMountain(int x, int y, int steps)
 	{
 		if(this.map[x][y].getTerrainModifier() == 0)
@@ -188,7 +198,7 @@ public class Simulation extends Application
 		{
 			int xOff = this.rng.nextInt(3) - 1;
 			int yOff = this.rng.nextInt(3) - 1;
-			
+
 			int i = 0;
 			boolean flag = false;
 			while(!flag && i < 7)
@@ -216,29 +226,20 @@ public class Simulation extends Application
 			}
 		}
 	}
-	
+
 	public void smoothLand()
 	{
-		int l = 0, newX, newY;
+		int l = 0;
+		ArrayList<Tile> list;
 		for(int x = 0; x < MAPSIZEX; x++)
 		{
 			for(int y = 0; y < MAPSIZEY; y++)
 			{
-				for(int xOff = -2; xOff <= 2; xOff++)
+				list = this.getSurroundingTiles(x, y);
+				for(int i = 0; i < list.size(); i++)
 				{
-					for(int yOff = -1; yOff <= 1; yOff++)
-					{
-						newX = x + xOff;
-						newY = y + yOff;
-						if(newX >= 0 && newX < MAPSIZEX && newX != x)
-						{
-							if(newY >= 0 && newY < MAPSIZEY && newY != y)
-							{
-								if(this.map[newX][newY].getTerrainModifier() == 0)
-									l++;
-							}
-						}
-					}
+					if(list.get(i).getTerrainModifier() == 0)
+						l++;
 				}
 				if(l > 4)
 				{
@@ -247,5 +248,95 @@ public class Simulation extends Application
 				l = 0;
 			}
 		}
+	}
+
+	public ArrayList<Tile> getSurroundingTiles(int x, int y)
+	{
+		Tile t = this.getTile(x, y);
+		ArrayList<Tile> out = new ArrayList<Tile>();
+
+		if(y % 2 == 0)
+		{
+			t = this.getTile(x - 1, y - 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y + 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x - 1, y - 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+		}
+		else
+		{
+			t = this.getTile(x, y + 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y - 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x + 1, y + 1);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x + 1, y + 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y + 2);
+			if(t != null)
+			{
+				out.add(t);
+			}
+
+			t = this.getTile(x, y + 3);
+			if(t != null)
+			{
+				out.add(t);
+			}
+		}
+
+		return out;
+	}
+
+	public ArrayList<Tile> getLandTiles()
+	{
+		return this.landTiles;
 	}
 }
