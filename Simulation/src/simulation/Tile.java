@@ -67,6 +67,10 @@ public class Tile{
 			this.Inhabitants.remove(member);
 	}
 	
+	public void cycle(){
+		this.RenewableResources += this.RegenRate;
+	}
+	
 	public int getX() {
 		return x;
 	}
