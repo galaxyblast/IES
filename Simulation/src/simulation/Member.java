@@ -9,7 +9,7 @@ public class Member
 	private Population population;
 	private Random random;
 	private int needs;
-	
+
 	public Member(Tile home, Population pop, Random rand)
 	{
 		this.homeTile = home;
@@ -17,17 +17,18 @@ public class Member
 		this.population = pop;
 		this.needs = pop.getpopNeeds();
 	}
-	
+
 	public void cycle() {
 		consumeResources();
 		reproduce();
+		System.out.println("Member Test");
 	}
-	
+
 	private void reproduce() {
 		if (random.nextInt() % 100 >= population.getPopRate()) {
 			// TODO: decide new home
 			Tile home = null;
-			
+
 			if (this.homeTile.isFull()) {
 				ArrayList<Tile> neighbors = Simulation.instance.getSurroundingTiles(this.homeTile);
 				for (int i = 0; i < neighbors.size(); i++) {
@@ -49,7 +50,7 @@ public class Member
 			return;
 		}
 	}
-	
+
 	public void consumeResources() {
 		int renewable = this.homeTile.getRenewableResources();
 		if (renewable >= needs)
@@ -66,7 +67,7 @@ public class Member
 				die();
 		}
 	}
-	
+
 	private void die() {
 		this.homeTile.getInhabitants().remove(this);
 		this.population.DelMemList(this);

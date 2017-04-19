@@ -36,7 +36,7 @@ public class Simulation extends Application
 	public static Simulation instance;
 
 	private Random rng = new Random();
-	
+
 	private TextField numCycle = new TextField();
 
 	//Main function
@@ -106,7 +106,7 @@ public class Simulation extends Application
 
 		//update map
 		this.updateWorld();
-		
+
 		this.world = new World(this.rng);
 	}
 
@@ -170,6 +170,9 @@ public class Simulation extends Application
 	private void genLand(int x, int y, int steps)
 	{
 		this.map[x][y].setTerrainModifier(0);
+		this.map[x][y].setRenewableResources(this.rng.nextInt(100));
+		this.map[x][y].setNonRenewableResources(this.rng.nextInt(100));
+		this.map[x][y].setRegenRate((int)Math.ceil((double)this.map[x][y].getRenewableResources() / 2.0D));
 		this.landTiles.add(this.map[x][y]);
 		if(this.rng.nextInt() % 32 != 0 && steps < 100)
 		{
@@ -348,12 +351,12 @@ public class Simulation extends Application
 
 		return out;
 	}
-	
+
 	public ArrayList<Tile> getSurroundingTiles(Tile tile)
 	{
 		int x = tile.getX();
 		int y = tile.getY();
-		
+
 		Tile t = this.getTile(x, y);
 		ArrayList<Tile> out = new ArrayList<Tile>();
 
