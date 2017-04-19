@@ -67,6 +67,19 @@ public class Tile{
 			this.Inhabitants.remove(member);
 	}
 	
+	public String getTileTerrainModString(){
+		switch(this.TerrainModifier)
+		{
+			case(0):
+				return "Land";
+			case(1):
+				return "Water";
+			case(2):
+				return "Mountain";
+		}
+		return "Unidentified Tile Type";
+	}
+	
 	public void cycle(){
 		this.RenewableResources += this.RegenRate;
 	}
