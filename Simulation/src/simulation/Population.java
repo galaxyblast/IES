@@ -1,14 +1,16 @@
 package simulation;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Population
 {
-	private ArrayList<Member> MemList; // An array of all members in the population.
-	private ArrayList<Tile> OwnedTiles; // An array of all Owned Tiles of the population.
+	private ArrayList<Member> MemList = new ArrayList<Member>(); // An array of all members in the population.
+	private ArrayList<Tile> OwnedTiles = new ArrayList<Tile>(); // An array of all Owned Tiles of the population.
 	
 	private float popRate;
 	private int popNeeds;
+	private Random seed;
 	
 	private static int  totalPopulation = 0;
 
@@ -20,9 +22,9 @@ public class Population
 		return popNeeds;
 	}
 	
-	public Tile UpdateTile(Tile tile){
-		// TODO
-		return tile; 
+	public void Cycle(){
+		Member.Cycle();
+ 
 	}
 	
 	public void AddTile(Tile tile) {
@@ -47,6 +49,10 @@ public class Population
 		
 	}
 
-	
+	public Population(Random seed, int needs, float rate){
+		this.seed = seed;
+		this.popRate = rate;
+		this.popNeeds = needs;
+	}
 	
 }
