@@ -1,5 +1,6 @@
 package simulation;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Member
@@ -17,18 +18,28 @@ public class Member
 		this.needs = pop.getpopNeeds();
 	}
 	
-	public void Cycle() {
-		ConsumeResources();
-		Reproduce();
+	public void cycle() {
+		consumeResources();
+		reproduce();
 	}
 	
-	private void Reproduce() {
+	private void reproduce() {
 		if (random.nextInt() % 100 >= population.getPopRate()) {
 			// TODO: decide new home
-			Tile home;
-			if (this.homeTile.getMaxInhabitants() >= this.homeTile.getInhabitants().size()) {
-				home = this.homeTile;	// TODO: Move Function
-				return;
+			Tile home = null;
+			
+			if (this.homeTile.isFull()) {
+				ArrayList<Tile> neighbors = Simulation.instance.getSurroundingTiles(this.homeTile);
+				for (int i = 0; i < neighbors.size(); i++) {
+					int rand = random.nextInt() % neighbors.size();
+					Tile tile = neighbors.get(rand);
+					if (!(tile.isFull() || (tile.getOwner() != this.population))) {
+						home = tile;
+						break;
+					}
+				}
+				if (home == null)
+					return;
 			} else {
 				home = this.homeTile;
 			}
@@ -39,7 +50,7 @@ public class Member
 		}
 	}
 	
-	public void ConsumeResources() {
+	public void consumeResources() {
 		int renewable = this.homeTile.getRenewableResources();
 		if (renewable >= needs)
 			this.homeTile.setRenewableResources(renewable - needs);
@@ -52,11 +63,12 @@ public class Member
 				this.homeTile.setNonRenewableResources(nonrenewable - difference);
 			}
 			else
-				Die();
+				die();
 		}
 	}
 	
-	private void Die() {
+	private void die() {
+		this.homeTile.getInhabitants().remove(this);
 		this.population.DelMemList(this);
 	}
 }
