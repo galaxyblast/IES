@@ -22,9 +22,9 @@ public class Population
 		return popNeeds;
 	}
 	
-	public void Cycle(){
+	public void cycle(){
 		for(Member i: MemList){
-			i.Cycle();
+			i.cycle();
 		}
 		for(Tile i: OwnedTiles){
 			if(i.isEmpty())
@@ -55,9 +55,9 @@ public class Population
 		
 	}
 
-	public Population(Random seed, int needs, float rate){
+	public Population(Random seed, int needs, float repRate){
 		this.seed = seed;
-		this.popRate = rate;
+		this.popRate = repRate;
 		this.popNeeds = needs;
 	}
 	
