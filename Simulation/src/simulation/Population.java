@@ -10,7 +10,7 @@ public class Population
 	private float popRate;
 	private int popNeeds;
 	
-	private static int  currentpersonindex = 0;
+	private static int  totalPopulation = 0;
 
 	public float getPopRate() {
 		return popRate;
@@ -36,12 +36,15 @@ public class Population
 	}
 	
 	public void AddMemList(Member member){
-		MemList.add(currentpersonindex, member);
-		currentpersonindex++;
+		MemList.add(totalPopulation, member);
+		totalPopulation++;
 	}
 	
 	public void DelMemList(Member member){
 		MemList.remove(member);
+		totalPopulation--;
+		MemList.trimToSize();
+		
 	}
 
 	
