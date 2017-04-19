@@ -49,7 +49,7 @@ public class Tile{
 	}
 	
 	public boolean isFull(){
-		if(this.Inhabitants.size() == this.MaxInhabitants)
+		if(this.Inhabitants.size() >= this.MaxInhabitants)
 			return true;
 		else
 			return false;
@@ -65,6 +65,19 @@ public class Tile{
 	public void removeMember(Member member){
 		if(this.Inhabitants.contains(member))
 			this.Inhabitants.remove(member);
+	}
+	
+	public String getTileTerrainModString(){
+		switch(this.TerrainModifier)
+		{
+			case(0):
+				return "Land";
+			case(1):
+				return "Water";
+			case(2):
+				return "Mountain";
+		}
+		return "Unidentified Tile Type";
 	}
 	
 	public void cycle(){
