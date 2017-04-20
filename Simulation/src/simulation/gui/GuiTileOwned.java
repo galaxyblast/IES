@@ -80,7 +80,8 @@ public class GuiTileOwned
 								"\nCivilians: " + this.tile.getInhabitants().size() +
 								"\nRenewable Resources: " + this.tile.getRenewableResources() +
 								"\nNonrenewable Resources: " + this.tile.getNonRenewableResources() +
-								"\nMax Inhabitants: " + this.tile.getMaxInhabitants());
+								"\nMax Inhabitants: " + this.tile.getMaxInhabitants() +
+								"\n\n" + this.tile.getTileTerrainModString());
 		Tooltip.install(hex, tip);
 	}
 
