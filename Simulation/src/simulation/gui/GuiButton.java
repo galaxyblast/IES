@@ -54,8 +54,6 @@ public class GuiButton
 	{
 		if(this.act != null)
 			this.act.start();
-		else
-			System.out.println("Button action uninitialized!");
 	}
 
 	protected void setBackgroundColor(double r, double g, double b, double a)

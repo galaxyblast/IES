@@ -15,7 +15,6 @@ public class World
 		Tile t;
 		int c;
 		ArrayList<Tile> l = Simulation.instance.getLandTiles();
-		System.out.println(l.size());
 		for(int i = 0; i < 4; i++)
 		{
 			popList[i] = new Population(r, 1, r.nextInt(90) + 1);
@@ -35,7 +34,6 @@ public class World
 
 	public void cycle()
 	{
-		System.out.println("World Test");
 		for(int i = 0; i < 4; i++)
 		{
 			this.popList[i].cycle();

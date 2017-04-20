@@ -483,7 +483,7 @@ public class Simulation extends Application
 	public int getNumCycles()
 	{
 		if(!this.numCycle.getText().isEmpty())
-			return Integer.parseInt(this.numCycle.getText());
+			return Integer.parseInt(this.numCycle.getText().replaceAll(",", ""));
 		
 		else
 			return 1;

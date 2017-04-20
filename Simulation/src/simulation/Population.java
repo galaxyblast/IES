@@ -25,7 +25,6 @@ public class Population
 	}
 
 	public void cycle(){
-		System.out.println("Pop Test");
 		synchronized(MemList)
 		{
 			for(Member i: MemList){

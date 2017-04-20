@@ -41,7 +41,6 @@ public class Tile{
 			maxInhabReturn = rng.nextInt(11) + 10;
 		else
 		{
-			System.out.println("Invalid tile type");
 			maxInhabReturn = 0;
 		}
 			
