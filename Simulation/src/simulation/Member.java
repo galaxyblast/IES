@@ -23,7 +23,6 @@ public class Member
 	public void cycle() {
 		consumeResources();
 		reproduce();
-		System.out.println("Member Test");
 	}
 
 	private void reproduce() {
