@@ -19,6 +19,7 @@ import simulation.gui.Action;
 import simulation.gui.GuiButton;
 import simulation.gui.GuiTile;
 import simulation.gui.GuiTileOwned;
+import simulation.gui.PopupMenu;
 
 public class Simulation extends Application
 {
@@ -40,6 +41,12 @@ public class Simulation extends Application
 	private Random rng = new Random();
 
 	private TextField numCycle = new TextField();
+	
+	private long seed = 0L;
+	private int landPass = 20;
+	private int mountPass = 3;
+	private int pops = 4;
+	private int birthRate = 90;
 
 	//Main function
 	@Override
@@ -52,7 +59,33 @@ public class Simulation extends Application
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
+		
+		primaryStage.setScene(new PopupMenu(primaryStage).getScene());
+		//this.begin(primaryStage, -1L, -1, -1, -1, -1);
+	}
+	
+	public void begin(Stage stage, long s, int l, int m, int p, int b)
+	{
+		if(s != -1L)
+			this.rng.setSeed(s);
+		
+		if(l > 0)
+			this.landPass = l;
+		
+		if(m >= 0)
+			this.mountPass = m;
+		
+		if(p > 0)
+			this.pops = p;
+		
+		if(p > 10)
+			this.pops = 10;
+		
+		if(b >= 0)
+			this.birthRate = b;
+		
+		stage.setScene(this.scene);
+		
 		//Initialize screen elements
 		this.runCycleButton.setAction(new Action(){
 			@Override
@@ -93,8 +126,8 @@ public class Simulation extends Application
 			}
 		}
 
-		int landPasses = this.rng.nextInt(11) + 20;
-		int mountainPasses = this.rng.nextInt(5) + 3;
+		int landPasses = this.rng.nextInt(11) + this.landPass;
+		int mountainPasses = this.rng.nextInt(5) + this.mountPass;
 
 		for(int i = 0; i <= landPasses; i++)
 		{
@@ -109,7 +142,7 @@ public class Simulation extends Application
 		}
 
 		this.world = new World(this.rng);
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < this.pops; i++)
 		{
 			for(Tile t : this.world.getPopList()[i].getOwnedTiles())
 			{
@@ -147,7 +180,7 @@ public class Simulation extends Application
 		}
 		
 		this.ownedTiles = new ArrayList<GuiTileOwned>();
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < this.pops; i++)
 		{
 			for(int x = 0; x < MAPSIZEX; x++)
 			{
@@ -487,5 +520,15 @@ public class Simulation extends Application
 		
 		else
 			return 1;
+	}
+	
+	public int getNumPops()
+	{
+		return this.pops;
+	}
+	
+	public int getBirthRate()
+	{
+		return this.birthRate;
 	}
 }

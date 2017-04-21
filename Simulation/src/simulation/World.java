@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class World
 {
-	private Population[] popList = new Population[4];
+	private Population[] popList = new Population[Simulation.instance.getNumPops()];
 	private Random rng;
 
 	public World(Random r)
@@ -15,9 +15,9 @@ public class World
 		Tile t;
 		int c;
 		ArrayList<Tile> l = Simulation.instance.getLandTiles();
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < Simulation.instance.getNumPops(); i++)
 		{
-			popList[i] = new Population(r, 1, r.nextInt(90) + 1);
+			popList[i] = new Population(r, r.nextInt(3) + 1, (float)r.nextInt(Simulation.instance.getBirthRate()) + 1);
 			c = this.rng.nextInt(l.size());
 			t = l.get(c);
 			l.remove(c);
@@ -34,7 +34,7 @@ public class World
 
 	public void cycle()
 	{
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < Simulation.instance.getNumPops(); i++)
 		{
 			this.popList[i].cycle();
 		}

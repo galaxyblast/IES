@@ -25,7 +25,6 @@ public class GuiTileOwned
 				4.0D, -16.0D,
 				0.0D, -8.0D
 		});
-		hex.setStroke(Color.BLACK);
 		Color c;
 
 		switch(this.tile.getOwner().getID())
@@ -40,13 +39,32 @@ public class GuiTileOwned
 			c = Color.BLACK;
 			break;
 		case 3:
-		default:
 			c = Color.PURPLE;
+			break;
+		case 4:
+			c = Color.YELLOW;
+			break;
+		case 5:
+			c = Color.CYAN;
+			break;
+		case 6:
+			c = Color.ORANGE;
+			break;
+		case 7:
+			c = Color.BROWN;
+			break;
+		case 8:
+			c = Color.PINK;
+			break;
+		case 9:
+		default:
+			c = Color.LIMEGREEN;
 			break;
 		}
 
+		hex.setStroke(c);
+		c = c.color(c.getRed(), c.getGreen(), c.getBlue(), 0.15D);
 		hex.setFill(c);
-		hex.setOpacity(0.2D);
 
 		double offX = 0.0D, offY = 0.0D;
 		if(this.tile.getY() % 2 == 1) //only offset every other row

@@ -101,12 +101,24 @@ public class Population
 			case 0:
 				return "Red";
 			case 1:
-				return "White";
+				return "Greenland";
 			case 2:
 				return "Black";
 			case 3:
-			default:
 				return "Purple";
+			case 4:
+				return "Yellow";
+			case 5:
+				return "Cyan";
+			case 6:
+				return "Orange";
+			case 7:
+				return "Brown";
+			case 8:
+				return "Pink";
+			case 9:
+			default:
+				return "Iceland";
 		}
 	}
 	
