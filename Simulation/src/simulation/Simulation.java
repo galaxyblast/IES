@@ -2,8 +2,13 @@ package simulation;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -29,9 +34,10 @@ public class Simulation extends Application
 	public final AnchorPane canvas = new AnchorPane();
 	private Scene scene = new Scene(this.canvas, 640, 480);
 	private GuiButton runCycleButton = new GuiButton("Run simulation", 125, 25, (int)(this.canvas.getWidth() / 2 - 62.5D), (int)(this.canvas.getHeight() - 30.0D));
+	private GuiButton pauseButton = new GuiButton("Pause", 125, 25, (int)(this.canvas.getWidth()/2 - 200.0D), (int)(this.canvas.getHeight() - 30.0D));
 	private World world;
 	private Tile[][] map = new Tile[MAPSIZEX][MAPSIZEY];
-	private Population[] popList = new Population[5];
+	private ArrayList<Population> popList = new ArrayList<Population>();
 	private ArrayList<Tile> landTiles = new ArrayList<Tile>();
 	private ArrayList<GuiTileOwned> ownedTiles = new ArrayList<GuiTileOwned>();
 
@@ -45,8 +51,9 @@ public class Simulation extends Application
 	private long seed = 0L;
 	private int landPass = 20;
 	private int mountPass = 3;
-	private int pops = 4;
+	private int pops;
 	private int birthRate = 90;
+	private boolean isPaused = false;
 
 	//Main function
 	@Override
@@ -61,10 +68,9 @@ public class Simulation extends Application
 		primaryStage.show();
 		
 		primaryStage.setScene(new PopupMenu(primaryStage).getScene());
-		//this.begin(primaryStage, -1L, -1, -1, -1, -1);
 	}
 	
-	public void begin(Stage stage, long s, int l, int m, int p, int b)
+	public void begin(Stage stage, long s, int l, int m, int b)
 	{
 		if(s != -1L)
 			this.rng.setSeed(s);
@@ -75,11 +81,7 @@ public class Simulation extends Application
 		if(m >= 0)
 			this.mountPass = m;
 		
-		if(p > 0)
-			this.pops = p;
-		
-		if(p > 10)
-			this.pops = 10;
+		this.pops = this.popList.size();
 		
 		if(b >= 0)
 			this.birthRate = b;
@@ -91,9 +93,18 @@ public class Simulation extends Application
 			@Override
 			public void start()
 			{
+				Simulation.instance.isPaused = false;
 				int c = Simulation.instance.getNumCycles();
 				System.out.println("Running " + c + " cycles.");
+
 				Simulation.instance.cycle(c);
+			}
+		});
+		this.pauseButton.setAction(new Action(){
+			@Override
+			public void start()
+			{
+				Simulation.instance.isPaused = true;
 			}
 		});
 		this.numCycle.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
@@ -102,6 +113,7 @@ public class Simulation extends Application
 
 		//Add screen elements
 		this.addButton(this.runCycleButton);
+		this.addButton(this.pauseButton);
 		this.canvas.getChildren().add(this.numCycle);
 
 		//setup world
@@ -144,7 +156,7 @@ public class Simulation extends Application
 		this.world = new World(this.rng);
 		for(int i = 0; i < this.pops; i++)
 		{
-			for(Tile t : this.world.getPopList()[i].getOwnedTiles())
+			for(Tile t : this.world.getPopList().get(i).getOwnedTiles())
 			{
 				this.ownedTiles.add(new GuiTileOwned(t));
 			}
@@ -156,19 +168,22 @@ public class Simulation extends Application
 
 	//The main function for simulation
 	public void cycle(int loops)
-	{
-		for(int i = 0; i < loops; i++)
+	{		
+		for (int i = 0; i < loops; i++)
 			this.world.cycle();
 		
+		System.out.println("Finished...");
 		this.updateWorld();
 	}
 
 	private void updateWorld()
 	{
+		System.out.println("Graphics");
 		GuiTile tmp;
 
 		this.canvas.getChildren().clear();
 		this.addButton(this.runCycleButton);
+		this.addButton(this.pauseButton);
 		this.canvas.getChildren().add(this.numCycle);
 		for(int x = 0; x < MAPSIZEX; x++)
 		{
@@ -216,7 +231,7 @@ public class Simulation extends Application
 		return this.map;
 	}
 
-	public Population[] getPopulationList()
+	public ArrayList<Population> getPopulationList()
 	{
 		return this.popList;
 	}

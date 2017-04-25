@@ -1,5 +1,7 @@
 package simulation.gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,7 +14,7 @@ import simulation.Simulation;
 public class PopupMenu
 {
 	private AnchorPane canvas = new AnchorPane();
-	private Scene popup = new Scene(canvas, 300, 200);
+	private Scene popup = new Scene(canvas, 300, 300);
 	
 	public PopupMenu(Stage stage)
 	{
@@ -31,21 +33,14 @@ public class PopupMenu
 		mountainPasses.setLayoutX(130.0D);
 		mountainPasses.setLayoutY(70.0D);
 		
-		TextField pops = new TextField("4");
-		pops.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+		Label pops = new Label("0");
 		pops.setLayoutX(130.0D);
 		pops.setLayoutY(100.0D);
-		
-		TextField birth = new TextField("90");
-		birth.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
-		birth.setLayoutX(130.0D);
-		birth.setLayoutY(130.0D);
 
 		Label sLabel = new Label("Seed");
 		Label lLabel = new Label("Land Frequency");
-		Label mLabel = new Label("Mountin Frequency");
-		Label pLabel = new Label("Starting Populations");
-		Label bLabel = new Label("Birth Rate");
+		Label mLabel = new Label("Mountain Frequency");
+		Label pLabel = new Label("Populations");
 
 		sLabel.setLayoutX(5.0D);
 		sLabel.setLayoutY(10.0D);
@@ -53,30 +48,27 @@ public class PopupMenu
 		lLabel.setLayoutY(40.0D);
 		mLabel.setLayoutX(5.0D);
 		mLabel.setLayoutY(70.0D);
-		pLabel.setLayoutX(5.0D);
+		pLabel.setLayoutX(5.0);
 		pLabel.setLayoutY(100.0D);
-		bLabel.setLayoutX(5.0D);
-		bLabel.setLayoutY(130.0D);
 		
 		this.canvas.getChildren().add(sLabel);
 		this.canvas.getChildren().add(lLabel);
 		this.canvas.getChildren().add(mLabel);
 		this.canvas.getChildren().add(pLabel);
-		this.canvas.getChildren().add(bLabel);
 		this.canvas.getChildren().add(seed);
 		this.canvas.getChildren().add(landPasses);
 		this.canvas.getChildren().add(mountainPasses);
 		this.canvas.getChildren().add(pops);
-		this.canvas.getChildren().add(birth);
 		
-		GuiButton go = new GuiButton("Begin", 125, 25, (int)(this.getScene().getWidth() / 2 - 62.5D), (int)(this.getScene().getHeight() - 35.0D));
+		GuiButton addPop = new GuiButton("Add Population", 125, 25, (int)(this.getScene().getWidth() / 2 - 62.5D), (int)(this.getScene().getHeight() - 75.0D));
+		GuiButton go = new GuiButton("Begin", 125, 25, (int)(this.getScene().getWidth() / 2 - 62.5D), (int)(this.getScene().getHeight() - 35.0D));		
 		
 		go.setAction(new Action(){
 			@Override
 			public void start()
 			{
 				long s = -1L;
-				int l = 20, m = 3, p = 4, b = 90;
+				int l = 20, m = 3, b = 90;
 				
 				if(!seed.getText().equals(""))
 				{
@@ -93,20 +85,30 @@ public class PopupMenu
 					m = Integer.parseInt(mountainPasses.getText().replaceAll(",", ""));
 				}
 				
-				if(!pops.getText().equals(""))
-				{
-					p = Integer.parseInt(pops.getText().replaceAll(",", ""));
-				}
-				
-				if(!birth.getText().equals(""))
-				{
-					b = Integer.parseInt(birth.getText().replaceAll(",", ""));
-				}
-				
-				Simulation.instance.begin(stage, s, l, m, p, b);
+				Simulation.instance.begin(stage, s, l, m, b);
 			}
 		});
 		
+		addPop.setAction(new Action() {
+			@Override
+			public void start() {
+				if (Simulation.instance.getPopulationList().size() >= 3) {
+					String currentText = pops.getText();
+					String newText = currentText + " *FULL*";
+					pops.setText(newText);
+					addPop.getButton().setDisable(true);
+				} else {
+					Stage tmpStage = new Stage();
+					tmpStage.setTitle("Generate Population");
+					AddPopMenu popMen = new AddPopMenu(tmpStage, pops);
+					tmpStage.setScene(popMen.getScene());
+					tmpStage.show();
+					
+				}
+			}
+		});
+		
+		this.addButton(addPop);
 		this.addButton(go);
 	}
 	

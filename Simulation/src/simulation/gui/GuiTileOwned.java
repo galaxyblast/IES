@@ -26,7 +26,10 @@ public class GuiTileOwned
 				0.0D, -8.0D
 		});
 		Color c;
-
+		
+		if (this.tile.getOwner() == null)
+			return;
+		
 		switch(this.tile.getOwner().getID())
 		{
 		case 0: //debug color

@@ -5,30 +5,30 @@ import java.util.Random;
 
 public class World
 {
-	private Population[] popList = new Population[Simulation.instance.getNumPops()];
+	private ArrayList<Population> popList = Simulation.instance.getPopulationList();
 	private Random rng;
 
 	public World(Random r)
 	{
 		this.rng = r;
-
+		
 		Tile t;
 		int c;
 		ArrayList<Tile> l = Simulation.instance.getLandTiles();
 		for(int i = 0; i < Simulation.instance.getNumPops(); i++)
 		{
-			popList[i] = new Population(r, r.nextInt(3) + 1, (float)r.nextInt(Simulation.instance.getBirthRate()) + 1);
+			//popList[i] = new Population(r, r.nextInt(3) + 1, (float)r.nextInt(Simulation.instance.getBirthRate()) + 1);
 			c = this.rng.nextInt(l.size());
 			t = l.get(c);
 			l.remove(c);
-			popList[i].AddTile(t);
+			popList.get(i).AddTile(t);
 
 			int s = r.nextInt(5) + 1;
 			for(int j = 0; j < s; j++)
 			{
-				popList[i].AddMemList(new Member(t, popList[i], r));
+				popList.get(i).AddMemList(new Member(t, popList.get(i), r));
 			}
-			popList[i].setID(i);
+			popList.get(i).setID(i);
 		}
 	}
 
@@ -36,7 +36,7 @@ public class World
 	{
 		for(int i = 0; i < Simulation.instance.getNumPops(); i++)
 		{
-			this.popList[i].cycle();
+			this.popList.get(i).cycle();
 		}
 
 		Tile[][] map = Simulation.instance.getMap();
@@ -49,7 +49,7 @@ public class World
 		}
 	}
 	
-	public Population[] getPopList()
+	public ArrayList<Population> getPopList()
 	{
 		return this.popList;
 	}
