@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
@@ -168,9 +169,37 @@ public class Simulation extends Application
 
 	//The main function for simulation
 	public void cycle(int loops)
-	{		
-		for (int i = 0; i < loops; i++)
-			this.world.cycle();
+	{
+		Task<Void> t = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				// TODO Auto-generated method stub
+				System.out.println("Staring thread");
+				for (int i = 0; i < loops; i++) {
+					if (this.isCancelled())
+						break;
+					if (Simulation.instance.isPaused)
+						break;
+					Simulation.instance.world.cycle();
+					
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							int newNum = Integer.parseInt(Simulation.instance.numCycle.getText().replaceAll(",", ""));
+							newNum--;
+							Simulation.instance.numCycle.setText(Integer.toString(newNum));	
+							Simulation.instance.updateWorld();
+						}
+					});
+					Thread.sleep(500);
+				}
+				System.out.println("Ending Thread");
+				return null;
+			}
+		};
+		Thread thread = new Thread(t);
+		thread.setDaemon(true);
+		thread.start();
 		
 		System.out.println("Finished...");
 		this.updateWorld();
