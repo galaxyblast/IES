@@ -8,7 +8,7 @@ public class Population
 	private CopyOnWriteArrayList<Member> MemList = new CopyOnWriteArrayList<Member>(); // An array of all members in the population.
 	private CopyOnWriteArrayList<Tile> OwnedTiles = new CopyOnWriteArrayList<Tile>(); // An array of all Owned Tiles of the population.
 
-	private float popRate;
+	private int popRate;
 	private int popNeeds;
 	private Random seed;
 
@@ -16,7 +16,7 @@ public class Population
 
 	private int id;
 
-	public float getPopRate() {
+	public int getPopRate() {
 		return popRate;
 	}
 
@@ -78,7 +78,7 @@ public class Population
 		}
 	}
 
-	public Population(Random seed, int needs, float repRate){
+	public Population(Random seed, int needs, int repRate){
 		this.seed = seed;
 		this.popRate = repRate;
 		this.popNeeds = needs;
