@@ -5,15 +5,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import simulation.Tile;
 
-public class GuiTileOwned
+public class GuiTileOwned extends GuiTile
 {
 	private Tile tile;
 	private Polygon hex;
 	private static final double MAPOFFX = 24.0D;
 	private static final double MAPOFFY = 32.0D;
-
+	
 	public GuiTileOwned(Tile t)
 	{
+		super(t);
 		this.tile = t;
 		this.hex = new Polygon();
 
@@ -26,7 +27,7 @@ public class GuiTileOwned
 				0.0D, -8.0D
 		});
 		Color c;
-		
+				
 		if (this.tile.getOwner() == null)
 			return;
 		
