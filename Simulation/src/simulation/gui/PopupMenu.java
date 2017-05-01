@@ -1,7 +1,5 @@
 package simulation.gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -92,7 +90,7 @@ public class PopupMenu
 		addPop.setAction(new Action() {
 			@Override
 			public void start() {
-				if (Simulation.instance.getPopulationList().size() >= 3) {
+				if (Simulation.instance.getPopulationList().size() >= 10) {
 					String currentText = pops.getText();
 					String newText = currentText + " *FULL*";
 					pops.setText(newText);

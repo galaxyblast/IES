@@ -67,7 +67,7 @@ public class GuiTileOwned extends GuiTile
 		}
 
 		hex.setStroke(c);
-		c = c.color(c.getRed(), c.getGreen(), c.getBlue(), 0.15D);
+		c = Color.color(c.getRed(), c.getGreen(), c.getBlue(), 0.15D);
 		hex.setFill(c);
 
 		double offX = 0.0D, offY = 0.0D;

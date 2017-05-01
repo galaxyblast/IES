@@ -2,16 +2,12 @@ package simulation;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
@@ -49,7 +45,6 @@ public class Simulation extends Application
 
 	private TextField numCycle = new TextField();
 	
-	private long seed = 0L;
 	private int landPass = 20;
 	private int mountPass = 3;
 	private int pops;

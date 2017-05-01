@@ -11,22 +11,12 @@ import javafx.scene.paint.Color;
 
 public class GuiButton
 {
-	private String txt;
-	private int width;
-	private int height;
-	private int	x, y;
 	private Button button;
 
 	private Action act;
 
 	public GuiButton(String txt, int width, int height, int x, int y)
 	{
-		this.txt = txt;
-		this.width = width;
-		this.height = height;
-		this.x = x;
-		this.y = y;
-
 		Button btn = new Button(txt);
 		btn.setPrefHeight(height);
 		btn.setMinHeight(height);

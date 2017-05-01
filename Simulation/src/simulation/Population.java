@@ -10,10 +10,6 @@ public class Population
 
 	private int popRate; // the rate that any population will grow.
 	private int popNeeds; // the rate that all members consume resources. 
-	private Random seed; // the random seed that needs to be stored in classes.
-
-	private static int  totalPopulation = 0;
-
 	private int id; // a number that differentiates the populations when the simulation is run.
 
 	public int getPopRate() { // a getter utilized by the members when they try to reproduce.
@@ -104,7 +100,6 @@ public class Population
 		synchronized(MemList)
 		{
 			MemList.add(member);
-			totalPopulation++;
 		}
 	}
 
@@ -112,12 +107,10 @@ public class Population
 		synchronized(MemList)
 		{
 			MemList.remove(member);
-			totalPopulation--;
 		}
 	}
 
 	public Population(Random seed, int needs, int repRate){ // constructor for a population
-		this.seed = seed;
 		this.popRate = repRate;
 		this.popNeeds = needs;
 	}
